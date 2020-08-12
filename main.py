@@ -32,6 +32,6 @@ def fetchingCompanies(listOfSymbols):
     parsingRecommendations(parsedArray)
 
 
-listOfStocks = ['TSM', 'BA', 'AMD']
+listOfStocks = ['TSM', 'BA', 'AMD', 'SNE']
 
 fetchingCompanies(listOfStocks)
