@@ -12,9 +12,13 @@ def parsing_recommendations(JSON_data):
     recommendation_data.to_csv('out.csv', index=True)
     df_columns_name = recommendation_data.columns
     df_symbol = recommendation_data['symbol'][0]
-    print(df_columns_name)
-    print(type(df_symbol))
-    #plotting_data(recommendation_data)
+    recommendation_data = recommendation_data.drop(columns=['symbol'])
+    #print(df_columns_name)
+    #print(df_symbol) 
+    recommendation_data['period'] = pd.to_datetime(recommendation_data['period'])
+    #print(recommendation_data['period'].sum())
+    print(recommendation_data)
+    plotting_data(recommendation_data)
 
 
 def get_recommendation(stock):
@@ -36,9 +40,11 @@ def fetching_companies(listOfSymbols):
     parsing_recommendations(parsedArray)
 
 def plotting_data(df):
-    print(df)
-    sns.boxplot(data=df)
-    sns.despine(bottom=True)
+    print(list(df[:2]))
+    period_column = df['period']
+    df = df.drop(columns=['period'])
+    print(period_column)
+    plt.bar(period_column, df['buy'], color='maroon')
     plt.show()
     
 
