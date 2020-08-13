@@ -2,12 +2,19 @@ import requests
 import json
 import csv
 import pandas as pd
+import seaborn as sns
 import matplotlib.pyplot as plt
+sns.set()
+
 
 def parsing_recommendations(JSON_data):
     recommendation_data = pd.read_json(JSON_data)
     recommendation_data.to_csv('out.csv', index=True)
-    plotting_data(recommendation_data)
+    df_columns_name = recommendation_data.columns
+    df_symbol = recommendation_data['symbol'][0]
+    print(df_columns_name)
+    print(type(df_symbol))
+    #plotting_data(recommendation_data)
 
 
 def get_recommendation(stock):
@@ -30,10 +37,12 @@ def fetching_companies(listOfSymbols):
 
 def plotting_data(df):
     print(df)
-    print(df.axes)
-    plt.bar(df.axes, df.columns)
+    sns.boxplot(data=df)
+    sns.despine(bottom=True)
     plt.show()
+    
 
-listOfStocks = ['TSM', 'BA', 'AMD', 'SNE']
+#listOfStocks = ['TSM', 'BA', 'AMD', 'SNE']
+listOfStocks = ['TSM']
 
 fetching_companies(listOfStocks)
