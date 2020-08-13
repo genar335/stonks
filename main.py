@@ -2,14 +2,15 @@ import requests
 import json
 import csv
 import pandas as pd
-import matplotlib as mpl
+import matplotlib.pyplot as plt
 
-def parsingRecommendations(JSON_data):
+def parsing_recommendations(JSON_data):
     recommendation_data = pd.read_json(JSON_data)
     recommendation_data.to_csv('out.csv', index=True)
+    plotting_data(recommendation_data)
 
 
-def getRecommendation(stock):
+def get_recommendation(stock):
     try:
         response = requests.get('https://finnhub.io/api/v1/stock/recommendation?symbol=' + stock + '&token=bsok7avrh5r8ktijv08g')
         print('The server has responded with a following status code:', response.status_code)
@@ -20,14 +21,19 @@ def getRecommendation(stock):
         print('An error has occurred:', error)
 
 
-def fetchingCompanies(listOfSymbols):
+def fetching_companies(listOfSymbols):
     arrayOfRecommendations = []
     for symbol in listOfSymbols:
-        arrayOfRecommendations += getRecommendation(symbol)
+        arrayOfRecommendations += get_recommendation(symbol)
     parsedArray = json.dumps(arrayOfRecommendations)
-    parsingRecommendations(parsedArray)
+    parsing_recommendations(parsedArray)
 
+def plotting_data(df):
+    print(df)
+    print(df.axes)
+    plt.bar(df.axes, df.columns)
+    plt.show()
 
 listOfStocks = ['TSM', 'BA', 'AMD', 'SNE']
 
-fetchingCompanies(listOfStocks)
+fetching_companies(listOfStocks)
